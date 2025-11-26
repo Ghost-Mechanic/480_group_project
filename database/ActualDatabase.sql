@@ -1,50 +1,33 @@
 USE bookoverflow;
 
--- --------------------------
--- Customers Table
--- --------------------------
+-- Customers
 CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
-    CustomerName VARCHAR(200),
+    FirstName VARCHAR(200),
+    LastName VARCHAR(200),
     UserName VARCHAR(50),
     Email VARCHAR(100),
-    PasswordHash VARCHAR(255),
-    Address VARCHAR(500),
-    CreatedAt DATE
+    Password VARCHAR(255),
+    DateCreated DATE
 );
 
--- --------------------------
--- Books Table
--- --------------------------
+-- Books
 CREATE TABLE Books (
     ISBN VARCHAR(20) PRIMARY KEY,
     Title VARCHAR(200),
     Synopsis VARCHAR(2000),
-    OverallRating DECIMAL(3,2),
     DatePublished DATE,
     CoverImage VARCHAR(500),
-    Cost DECIMAL(6,2)
+    AvgRating DECIMAL(3,2)
 );
 
--- --------------------------
--- Authors Table
--- --------------------------
+-- Authors
 CREATE TABLE Authors (
     AuthorID INT PRIMARY KEY AUTO_INCREMENT,
-    AuthorName VARCHAR(100)
+    AuthorName VARCHAR(200)
 );
 
--- --------------------------
--- Genres Table
--- --------------------------
-CREATE TABLE Genres (
-    GenreID INT PRIMARY KEY AUTO_INCREMENT,
-    GenreName VARCHAR(100)
-);
-
--- --------------------------
 -- BookAuthors (junction)
--- --------------------------
 CREATE TABLE BookAuthors (
     ISBN VARCHAR(20),
     AuthorID INT,
@@ -53,9 +36,13 @@ CREATE TABLE BookAuthors (
     FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
 );
 
--- --------------------------
+-- Genres
+CREATE TABLE Genres (
+    GenreID INT PRIMARY KEY AUTO_INCREMENT,
+    GenreName VARCHAR(200)
+);
+
 -- BookGenres (junction)
--- --------------------------
 CREATE TABLE BookGenres (
     ISBN VARCHAR(20),
     GenreID INT,
@@ -64,16 +51,14 @@ CREATE TABLE BookGenres (
     FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)
 );
 
--- --------------------------
--- Ratings Table
--- --------------------------
+-- Ratings
 CREATE TABLE Ratings (
     RatingID INT PRIMARY KEY AUTO_INCREMENT,
-    UserID INT,
-    BookID VARCHAR(20),
+    CustomerID INT,
+    ISBN VARCHAR(20),
     RatingValue INT,
     Description VARCHAR(1000),
-    CreatedAt DATE,
-    FOREIGN KEY (UserID) REFERENCES Customers(CustomerID),
-    FOREIGN KEY (BookID) REFERENCES Books(ISBN)
+    Date DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
 );

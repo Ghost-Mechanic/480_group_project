@@ -1,7 +1,0 @@
-LOAD DATABASE
-    FROM mysql://password%@localhost:3306/bookoverflow
-    INTO postgresql://bookoverflow_user:oAYs1PJ3hHA5TYQuXhWEZNGEPbCNAC8m@dpg-d4ibtko896os73ai6m10-a.oregon-postgres.render.com/bookoverflow?sslmode=require
-
-WITH include no drop, create tables, create indexes, reset sequences
-
-SET work_mem to '16MB', maintenance_work_mem to '512 MB';
