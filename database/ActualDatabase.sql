@@ -51,4 +51,3 @@ CREATE TABLE Rating (
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
     FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
 );
-
