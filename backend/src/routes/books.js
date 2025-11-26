@@ -6,7 +6,20 @@ const router = express.Router();
 // Get all books
 router.get("/", async (req, res) => {
     try {
-        const [rows] = await db.query("SELECT * FROM Books");
+        const [rows] = await db.query(`
+        SELECT 
+    b.ISBN,
+    b.Title,
+    b.Synopsis,
+    b.OverallRating,
+    b.DatePublished,
+    b.CoverImage,
+    b.Cost,
+    GROUP_CONCAT(a.AuthorName SEPARATOR ', ') AS Authors
+FROM Books b
+LEFT JOIN BookAuthors ba ON b.ISBN = ba.ISBN
+LEFT JOIN Authors a ON ba.AuthorID = a.AuthorID
+GROUP BY b.ISBN;`);
         res.json(rows);
     } catch (err) {
         console.error(err);

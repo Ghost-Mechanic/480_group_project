@@ -6,7 +6,7 @@ const router = express.Router();
 // Get all users
 router.get("/", async (req, res) => {
     try {
-        const [rows] = await db.query("SELECT id, username, email, created_at FROM Users");
+        const [rows] = await db.query("SELECT CustomerID, UserName, Email, CreatedAt FROM Customers");
         res.json(rows);
     } catch (err) {
         console.error(err);
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
     const { username, email, password } = req.body;
     try {
         const [result] = await db.query(
-            "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)",
+            "INSERT INTO Users (UserName, Email, password) VALUES (?, ?, ?)",
             [username, email, password]
         );
         res.json({ id: result.insertId, username, email });

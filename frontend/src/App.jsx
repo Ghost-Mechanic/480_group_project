@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 function App() {
     const [books, setBooks] = useState([]);
-    const [authors, setAuthors] = useState([]);
-    const [genres, setGenres] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -11,16 +9,9 @@ function App() {
             try {
                 const booksRes = await fetch("http://localhost:3001/api/books");
                 const booksData = await booksRes.json();
-
-                const authorsRes = await fetch("http://localhost:3001/api/book-authors");
-                const authorsData = await authorsRes.json();
-
-                const genresRes = await fetch("http://localhost:3001/api/book-genres");
-                const genresData = await genresRes.json();
+                console.log(booksData);
 
                 setBooks(booksData);
-                setAuthors(authorsData);
-                setGenres(genresData);
                 setLoading(false);
             } catch (err) {
                 console.error(err);
@@ -29,40 +20,64 @@ function App() {
         fetchData();
     }, []);
 
-    // Helper to get authors for a book
-    const getAuthorsForBook = (bookId) =>
-        authors.filter((a) => a.book_id === bookId).map((a) => a.author_name).join(", ");
-
-    // Helper to get genres for a book
-    const getGenresForBook = (bookId) =>
-        genres.filter((g) => g.book_id === bookId).map((g) => g.genre_name).join(", ");
-
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
-            <h1>BookOverflow</h1>
-            {books.map((book) => (
+        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", fontFamily: "Arial, sans-serif" }}>
+            {/* Header */}
+            <header style={{ backgroundColor: "#2c3e50", color: "white", padding: "1rem 2rem", textAlign: "center" }}>
+                <h1 style={{ margin: 0 }}>Book Overflow</h1>
+            </header>
+
+            {/* Main Content */}
+            <main style={{ flex: 1, padding: "2rem", backgroundColor: "#f4f4f9" }}>
                 <div
-                    key={book.id}
                     style={{
-                        border: "1px solid #ccc",
-                        padding: "1rem",
-                        marginBottom: "1rem",
-                        borderRadius: "8px",
-                        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+                        gap: "2rem",
                     }}
                 >
-                    <h2>{book.title}</h2>
-                    <p>{book.description}</p>
-                    <p>
-                        <strong>Authors:</strong> {getAuthorsForBook(book.id) || "N/A"}
-                    </p>
-                    <p>
-                        <strong>Genres:</strong> {getGenresForBook(book.id) || "N/A"}
-                    </p>
+                    {books.map((book) => (
+                        <div
+                            key={book.ISBN}
+                            style={{
+                                backgroundColor: "white",
+                                border: "1px solid #ddd",
+                                borderRadius: "8px",
+                                overflow: "hidden",
+                                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                                display: "flex",
+                                flexDirection: "column",
+                            }}
+                        >
+                            <img
+                                src={book.CoverImage || "https://placehold.co/400x300?text=Book+Cover"}
+                                alt={book.Title}
+                                style={{ width: "100%", height: "200px", objectFit: "cover" }}
+                            />
+                            <div style={{ padding: "1rem", flex: 1 }}>
+                                <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "1.2rem" }}>{book.Title}</h3>
+                                <p style={{ margin: "0 0 0.5rem 0", color: "#555" }}>
+                                    <strong>Author:</strong> {book.Authors || "Unknown"}
+                                </p>
+                                <p style={{ margin: "0 0 0.5rem 0", color: "#777", fontSize: "0.9rem" }}>
+                                    <strong>Published:</strong> {Date(book.DatePublished).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric"
+                                        }) || "Unknown Date"}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-            ))}
+            </main>
+
+            {/* Footer */}
+            <footer style={{ backgroundColor: "#2c3e50", color: "white", textAlign: "center", padding: "1rem" }}>
+                <p style={{ margin: 0 }}>&copy; {new Date().getFullYear()} Book Overflow. All rights reserved.</p>
+            </footer>
         </div>
     );
 }

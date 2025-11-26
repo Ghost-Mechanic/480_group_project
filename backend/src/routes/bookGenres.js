@@ -6,12 +6,7 @@ const router = express.Router();
 // Get all books with their genres
 router.get("/", async (req, res) => {
     try {
-        const [rows] = await db.query(`
-      SELECT Books.id AS book_id, Books.title, Books.description, Genres.id AS genre_id, Genres.name AS genre_name
-      FROM BookGenres
-      JOIN Books ON Books.id = BookGenres.book_id
-      JOIN Genres ON Genres.id = BookGenres.genre_id
-    `);
+        const [rows] = await db.query(`SELECT * FROM BookGenres`);
         res.json(rows);
     } catch (err) {
         console.error(err);
