@@ -25,20 +25,6 @@ GENRE_TERMS = [
 ]
 
 BOOK_LIMIT = 50   # ~10 × 50 = ~500 books
-
-# Polished fallback descriptions if the OpenLibrary description is missing/bad
-GENERIC_DESCRIPTIONS = {
-    "fantasy": "A fantasy story featuring imaginative worlds, magical elements, and adventurous characters.",
-    "romance": "A heartfelt romance exploring relationships, emotions, and meaningful connections.",
-    "mystery": "A suspenseful mystery centered around secrets, clues, and unexpected twists.",
-    "science fiction": "A science fiction narrative exploring futuristic ideas, advanced technology, and speculative concepts.",
-    "history": "A historical work reflecting events, cultures, and perspectives from the past.",
-    "biography": "A biographical account detailing the life, experiences, and journey of a notable figure.",
-    "children": "A children's book crafted to spark imagination and engage young readers.",
-    "young adult": "A young adult novel examining themes of identity, relationships, and coming-of-age.",
-    "philosophy": "A philosophical text examining deep questions, ideas, and theories about life and thought.",
-    "business": "A business-focused book offering insights into strategy, leadership, and professional development."
-}
 # ==================================
 
 
@@ -59,12 +45,12 @@ def fetch_books(query, limit=100, offset=0):
         "fields": "key,title,subtitle,isbn,first_publish_year,author_name,subject",
     }
     # IMPORTANT: pass params so the query + limit are used
-    resp = requests.get(url, params=params, timeout=10)
+    resp = requests.get(url, params=params)
     resp.raise_for_status()
     return resp.json().get("docs", [])
 
 
-def fetch_description(work_key):
+def fetch_description(work_key: str | None) -> str | None:
     """
     Fetch real description from OpenLibrary Work API.
     Returns a string or None.
@@ -94,34 +80,26 @@ def fetch_description(work_key):
         return None
 
 
-def is_bad_description(text: str | None) -> bool:
-    """
-    Returns True if description is missing, empty,
-    too short, or clearly low-quality.
-    """
-    if not text:
-        return True
-    text = text.strip()
-    if len(text) < 40:  # extremely short or useless blurbs
-        return True
-    if text.lower() in {"description unavailable", "n/a", "none"}:
-        return True
-    return False
-
-
 def insert_book(cur, isbn, title, synopsis, year):
-    """Insert or update a row in Book."""
+    """
+    Insert or update a row in Book.
+    Now also stores a cover image URL based on ISBN.
+    """
     pub_date = date(int(year), 1, 1) if year else None
 
+    # OpenLibrary cover image URL for this ISBN
+    cover_url = f"https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg"
+
     sql = """
-        INSERT INTO Book (ISBN, Title, Synopsis, DatePublished)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO Book (ISBN, Title, Synopsis, DatePublished, CoverImage)
+        VALUES (%s, %s, %s, %s, %s)
         ON DUPLICATE KEY UPDATE
             Title = VALUES(Title),
             Synopsis = VALUES(Synopsis),
-            DatePublished = VALUES(DatePublished)
+            DatePublished = VALUES(DatePublished),
+            CoverImage = VALUES(CoverImage)
     """
-    cur.execute(sql, (isbn, title, synopsis, pub_date))
+    cur.execute(sql, (isbn, title, synopsis, pub_date, cover_url))
 
 
 def split_author_name(full_name: str):
@@ -147,6 +125,10 @@ def insert_author(cur, isbn, first, last):
 
 
 def insert_genre(cur, isbn, genre_name):
+    """
+    Insert genre for this ISBN.
+    We will ensure in Python that we only ever call this once per ISBN.
+    """
     sql = """
         INSERT IGNORE INTO Genres (ISBN, GenreName)
         VALUES (%s, %s)
@@ -159,6 +141,9 @@ def load_books_all_genres():
     cur = cnx.cursor()
 
     total_books = 0
+
+    # Track which ISBNs already got a genre
+    genres_assigned = set()
 
     for genre in GENRE_TERMS:
         print(f"Fetching books for genre: {genre}...")
@@ -176,21 +161,25 @@ def load_books_all_genres():
             work_key = doc.get("key")
             description = fetch_description(work_key)
 
-            clean_genre = genre.lower().strip()
-
-            if description and not is_bad_description(description):
-                # Good real description from OpenLibrary
+            if description:
                 synopsis = description[:2000]
             else:
-                # Fallback polished description based on genre, or title
-                synopsis = GENERIC_DESCRIPTIONS.get(
-                    clean_genre,
-                    f"A book titled '{title}'."
-                )
+                # fallback system
+                subtitle = doc.get("subtitle") or ""
+                subjects = doc.get("subject", [])
+
+                if subtitle:
+                    synopsis = subtitle
+                elif subjects:
+                    synopsis = f"A book about {subjects[0]}."
+                else:
+                    synopsis = f"A book titled '{title}'."
+
+                synopsis = synopsis[:2000]
 
             year = doc.get("first_publish_year")
 
-            # Insert book
+            # Insert / update book
             insert_book(cur, isbn, title, synopsis, year)
             total_books += 1
 
@@ -201,19 +190,19 @@ def load_books_all_genres():
                     continue
                 insert_author(cur, isbn, first, last)
 
-            # Insert ONE genre per book, based on the search term
-            insert_genre(cur, isbn, genre)
+            # ✅ ONE GENRE PER ISBN:
+            # Only assign a genre if this ISBN doesn't have one yet.
+            if isbn not in genres_assigned:
+                insert_genre(cur, isbn, genre)
+                genres_assigned.add(isbn)
 
         cnx.commit()
         print(f"Finished genre: {genre}")
 
     cur.close()
     cnx.close()
-    print(f"Total books processed: {total_books}")
+    print(f"Total books processed (docs seen): {total_books}")
 
 
 if __name__ == "__main__":
     load_books_all_genres()
-
-
-

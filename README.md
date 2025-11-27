@@ -1,32 +1,27 @@
 #This is a project for CS 480
 
-You will notice that there are 3 different folders for the project: (all in alphabetical order)
-- backend
-- database
-- frontend
+📘 Database Setup (VS Code + MySQL Extension)
+Use this section to set up the database for this project.
 
-With backend, there are different API calls to be made, so those are separated in scripts:
-- db.js -> Gets the LOCAL database
-- index.js -> Defines different routes / scripts used
-- /routes/... -> Each stores a get / post HTTP request
-    - Though we do not use the POSt HTTP request, it is included just in case...
+This project uses a shared MySQL database dump so everyone on the team has the same dataset without needing to run the Python script.
 
-To set up the backend, I did the following:
-- cd backend
-- npm install
-- npm run dev
+You only need to import the file:
 
-With the database, it well, ... stores the SQL query for creating the tables in the bookoverflow database. Honestly, there is not too much to say about it.
+full_database.sql
 
-But, if you want to set up your database, I can't really say too much about it. I am using MySQLWorkbench to run my queries to create my database, tables, and schemas. If you want the actualt database file, then you can export it from ... I forgot. :|
+Follow the steps below.
 
-For the front end, this is where the UI / UX can shine!
-I chose React because it allows us to create instances od reusable elements, which can prove to be useful in the future: creating a nav elements for MANY pages, creating a card element that is used mutiple times in ONE page, etc.
-The main.jsx is the "main" page that stores the "main" element in the HTML page, whereas app.jsx is the "skeleton" of the "main" element in the "main" page
-P.S.the stylesheets were created on their own (NOT by ChatGPT)!
+Install the MySQL extension in VS Code
 
-To set up the backend, I did the following:
-- cd frontend
-- npm install
-- npm run dev
-So, similar to how you setup the backend. Okay, take care! :)
+Add a MySQL connection:
+
+Server: 127.0.0.1
+User: cs480
+Password: cs480pass
+Create the database: CREATE DATABASE cs480_group_project; USE cs480_group_project;
+
+Open the file full_database.sql in VS Code. It is under the Database folder
+
+Click "Run" (▶️) or right-click → "Run MySQL Query".
+
+This loads the entire dataset (Books, Authors, Genres). Customers and Ratings tables will be empty by default.

@@ -21,6 +21,7 @@ CREATE TABLE Book (
     Title VARCHAR(200),
     Synopsis VARCHAR(7000),
     DatePublished DATE,
+    CoverImage VARCHAR(300),
     AvgRating DECIMAL(3,2) NULL   
 );
 
