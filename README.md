@@ -21,12 +21,8 @@ With the database, it well, ... stores the SQL query for creating the tables in 
 But, if you want to set up your database, I can't really say too much about it. I am using MySQLWorkbench to run my queries to create my database, tables, and schemas. If you want the actualt database file, then you can export it from ... I forgot. :|
 
 For the front end, this is where the UI / UX can shine!
-I chose React because it allows us to create instances od reusable elements, which can prove to be useful in the future: creating a nav elements for MANY pages, creating a card element that is used mutiple times in ONE page, etc.
-The main.jsx is the "main" page that stores the "main" element in the HTML page, whereas app.jsx is the "skeleton" of the "main" element in the "main" page
-P.S.the stylesheets were created on their own (NOT by ChatGPT)!
+We did stright HTML / CSS / JS since it was the easiest to use!
 
-To set up the backend, I did the following:
-- cd frontend
-- npm install
-- npm run dev
+To set up the front, I just do the following:
+- Run the index.html file through the browser
 So, similar to how you setup the backend. Okay, take care! :)
