@@ -1,79 +1,54 @@
-USE bookoverflow;
+USE cs480_group_project;
 
--- --------------------------
--- Customers Table
--- --------------------------
-CREATE TABLE Customers (
+DROP TABLE IF EXISTS Rating;
+DROP TABLE IF EXISTS Genres;
+DROP TABLE IF EXISTS Author;
+DROP TABLE IF EXISTS Book;
+DROP TABLE IF EXISTS Customer;
+
+CREATE TABLE Customer (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
-    CustomerName VARCHAR(200),
+    FirstName VARCHAR(100),
+    LastName VARCHAR(100),
     UserName VARCHAR(50),
-    Email VARCHAR(100),
     PasswordHash VARCHAR(255),
-    Address VARCHAR(500),
-    CreatedAt DATE
+    Email VARCHAR(100),
+    DateCreated DATE
 );
 
--- --------------------------
--- Books Table
--- --------------------------
-CREATE TABLE Books (
+CREATE TABLE Book (
     ISBN VARCHAR(20) PRIMARY KEY,
     Title VARCHAR(200),
-    Synopsis VARCHAR(2000),
-    OverallRating DECIMAL(3,2),
+    Synopsis VARCHAR(7000),
     DatePublished DATE,
-    CoverImage VARCHAR(500),
-    Cost DECIMAL(6,2)
+    CoverImage VARCHAR(300),
+    AvgRating DECIMAL(3,2) NULL   
 );
 
--- --------------------------
--- Authors Table
--- --------------------------
-CREATE TABLE Authors (
-    AuthorID INT PRIMARY KEY AUTO_INCREMENT,
-    AuthorName VARCHAR(100)
+CREATE TABLE Author (
+    ISBN VARCHAR(20),
+    FirstName VARCHAR(100),
+    LastName VARCHAR(100),
+    PRIMARY KEY (ISBN, FirstName, LastName),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
 );
 
--- --------------------------
--- Genres Table
--- --------------------------
 CREATE TABLE Genres (
-    GenreID INT PRIMARY KEY AUTO_INCREMENT,
-    GenreName VARCHAR(100)
-);
-
--- --------------------------
--- BookAuthors (junction)
--- --------------------------
-CREATE TABLE BookAuthors (
     ISBN VARCHAR(20),
-    AuthorID INT,
-    PRIMARY KEY (ISBN, AuthorID),
-    FOREIGN KEY (ISBN) REFERENCES Books(ISBN),
-    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
+    GenreName VARCHAR(100),
+    PRIMARY KEY (ISBN, GenreName),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
 );
 
--- --------------------------
--- BookGenres (junction)
--- --------------------------
-CREATE TABLE BookGenres (
-    ISBN VARCHAR(20),
-    GenreID INT,
-    PRIMARY KEY (ISBN, GenreID),
-    FOREIGN KEY (ISBN) REFERENCES Books(ISBN),
-    FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)
-);
 
--- --------------------------
--- Ratings Table
--- --------------------------
-CREATE TABLE Ratings (
+CREATE TABLE Rating (
     RatingID INT PRIMARY KEY AUTO_INCREMENT,
-    UserID INT,
-    BookID VARCHAR(20),
+    CustomerID INT,
+    ISBN VARCHAR(20),
+    UserName VARCHAR(50),
     RatingValue INT,
     Description VARCHAR(1000),
     CreatedAt DATE,
-    FOREIGN KEY (UserID) REFERENCES Customers(CustomerID),
-    FOREIGN KEY (BookID) REFERENCES Books(ISBN)
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (ISBN) REFERENCES Book(ISBN)
 );
