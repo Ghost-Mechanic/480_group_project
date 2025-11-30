@@ -23,9 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const username = document.getElementById("signupUsername").value.trim();
             const password = document.getElementById("signupPassword").value.trim();
+            const email = document.getElementById("signupEmail").value.trim();
 
-            if (!username || !password) {
-                alert("Please enter a username and password.");
+            if (!username || !password || !email) {
+                alert("Please fill out all fields.");
                 return;
             }
 
@@ -37,14 +38,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            users.push({ username, password });
+            // Add new user with email
+            users.push({ username, password, email });
             saveUsers(users);
 
+            // Mark user as logged in
             localStorage.setItem("loggedInUser", username);
 
+            // Go to homepage
             window.location.href = "home.html";
         });
     }
+
 
     if (loginForm) {
         loginForm.addEventListener("submit", (e) => {
@@ -60,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!user) {
                 alert("Invalid username or password. Please sign up first if you don't have an account.");
-                return; 
+                return;
             }
 
             localStorage.setItem("loggedInUser", user.username);
