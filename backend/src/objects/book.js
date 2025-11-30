@@ -3,20 +3,18 @@ export default class Book {
         isbn,
         title,
         synopsis,
-        overallRating,
+        avgRating,
         datePublished,
         coverImage,
-        cost,
         authors, // array of authors
         genres, // array of genres
     ) {
         this.isbn = isbn;
         this.title = title;
         this.synopsis = synopsis;
-        this.overallRating = overallRating;
+        this.avgRating = avgRating;
         this.datePublished = datePublished;
         this.coverImage = coverImage;
-        this.cost = cost;
         this.authors = authors;
         this.genres = genres;
     }

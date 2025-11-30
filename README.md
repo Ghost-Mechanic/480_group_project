@@ -35,17 +35,38 @@ So, similar to how you setup the backend. Okay, take care! :)
 
 This project uses a shared MySQL database dump so everyone on the team has the same dataset without needing to run the Python script.
 
-You only need to import the file:
-
-full_database.sql
-
 Follow the steps below.
 
 Install the MySQL extension in VS Code
+STEP 1 – Create the database and project user
+Use either:
 
-Add a MySQL connection:
+MySQL Workbench,
 
-Server: 127.0.0.1 User: cs480 Password: cs480pass Create the database: CREATE DATABASE cs480_group_project; USE cs480_group_project;
+OR VS Code MySQL extension (new query),
+
+OR terminal:
+
+Open a SQL editor and run this SQL:
+-- Create the database
+CREATE DATABASE cs480_group_project;
+
+-- Create a low-stakes project user
+CREATE USER 'cs480'@'localhost' IDENTIFIED BY 'cs480pass';
+
+-- Give it access only to this database
+GRANT ALL PRIVILEGES ON cs480_group_project.* TO 'cs480'@'localhost';
+FLUSH PRIVILEGES;
+
+Now MySQL is ready with:
+
+DB name: cs480_group_project
+
+User: cs480
+
+Password: cs480pass
+
+You’ll only ever use that in your project code, not your root password.
 
 Open the file full_database.sql in VS Code. It is under the Database folder
 
