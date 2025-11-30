@@ -49,4 +49,6 @@ ehthumbs.db
 # Keep SQL dumps tracked; do not ignore *.sql in `database/` (they are project data)
 
 .venv/
+venv/
+.env
 
