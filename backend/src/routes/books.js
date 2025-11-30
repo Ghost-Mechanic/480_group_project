@@ -8,22 +8,20 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     try {
         const [rows] = await db.query(`
-        SELECT 
-    b.ISBN,
-    b.Title,
-    b.Synopsis,
-    b.OverallRating,
-    b.DatePublished,
-    b.CoverImage,
-    b.Cost,
-    GROUP_CONCAT(DISTINCT a.AuthorName SEPARATOR ', ') AS Authors,
-    GROUP_CONCAT(DISTINCT c.GenreName SEPARATOR ', ') AS Genres
-FROM Books b
-LEFT JOIN BookAuthors ba ON b.ISBN = ba.ISBN
-LEFT JOIN Authors a ON ba.AuthorID = a.AuthorID
-LEFT JOIN BookGenres bg ON b.ISBN = bg.ISBN
-LEFT JOIN Genres c ON bg.GenreID = c.GenreID
-GROUP BY b.ISBN;`);
+            SELECT 
+            b.ISBN,
+            b.Title,
+            b.Synopsis,
+            b.DatePublished,
+            b.CoverImage,
+            b.AvgRating,
+            GROUP_CONCAT(DISTINCT CONCAT(a.FirstName, ' ', a.LastName) SEPARATOR ', ') AS Authors,
+            GROUP_CONCAT(DISTINCT g.GenreName SEPARATOR ', ') AS Genres
+            FROM Book b
+            LEFT JOIN Author a ON b.ISBN = a.ISBN
+            LEFT JOIN Genres g ON b.ISBN = g.ISBN
+            GROUP BY b.ISBN;`
+        );
         
         // console.log(rows);
         res.json(rows);
@@ -58,17 +56,19 @@ router.get("/filter", async (req, res) => {
 
         if (author) {
             // For author, filter on Authors table
-            conditions.push("a.AuthorName LIKE ?");
+            conditions.push("(a.FirstName LIKE ? OR a.LastName LIKE ? OR CONCAT(a.FirstName, ' ', a.LastName) LIKE ?)");
+            params.push(`%${author}%`);
+            params.push(`%${author}%`);
             params.push(`%${author}%`);
         }
 
         if (genre) {
-            conditions.push("c.GenreName LIKE ?");
+            conditions.push("g.GenreName LIKE ?");
             params.push(`%${genre}%`);
         }
 
         if (minRating) {
-            conditions.push("b.OverallRating >= ?");
+            conditions.push("b.AvgRating >= ?");
             params.push(minRating);
         }
 
@@ -80,20 +80,17 @@ router.get("/filter", async (req, res) => {
         const [rows] = await db.query(
             `
             SELECT 
-                b.ISBN,
-                b.Title,
-                b.Synopsis,
-                b.OverallRating,
-                b.DatePublished,
-                b.CoverImage,
-                b.Cost,
-                GROUP_CONCAT(DISTINCT a.AuthorName SEPARATOR ', ') AS Authors,
-                GROUP_CONCAT(DISTINCT c.GenreName SEPARATOR ', ') AS Genres
-            FROM Books b
-            LEFT JOIN BookAuthors ba ON b.ISBN = ba.ISBN
-            LEFT JOIN Authors a ON ba.AuthorID = a.AuthorID
-            LEFT JOIN BookGenres bg ON b.ISBN = bg.ISBN
-            LEFT JOIN Genres c ON bg.GenreID = c.GenreID
+            b.ISBN,
+            b.Title,
+            b.Synopsis,
+            b.DatePublished,
+            b.CoverImage,
+            b.AvgRating,
+            GROUP_CONCAT(DISTINCT CONCAT(a.FirstName, ' ', a.LastName) SEPARATOR ', ') AS Authors,
+            GROUP_CONCAT(DISTINCT g.GenreName SEPARATOR ', ') AS Genres
+            FROM Book b
+            LEFT JOIN Author a ON b.ISBN = a.ISBN
+            LEFT JOIN Genres g ON b.ISBN = g.ISBN
             ${whereClause}
             GROUP BY b.ISBN
             ORDER BY b.DatePublished ASC;
@@ -109,10 +106,9 @@ router.get("/filter", async (req, res) => {
                     rows[i].ISBN,
                     rows[i].Title,
                     rows[i].Synopsis,
-                    rows[i].OverallRating,
+                    rows[i].AvgRating,
                     rows[i].DatePublished,
                     rows[i].CoverImage,
-                    rows[i].Cost,
                     rows[i].Authors,
                     rows[i].Genres,
                 )
