@@ -90,3 +90,20 @@ window.onload = function() {
 }
 
 console.log("Book display script loaded.");
+
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+      // Get query params from URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Fetch books from backend
+      const res = await fetch(`/api/books/filter?${urlParams.toString()}`);
+      const data = await res.json();
+
+      // Print the books to console
+      console.log("Fetched books:", data);
+
+  } catch (err) {
+      console.error("Error fetching books:", err);
+  }
+});
