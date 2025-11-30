@@ -35,10 +35,6 @@ So, similar to how you setup the backend. Okay, take care! :)
 
 This project uses a shared MySQL database dump so everyone on the team has the same dataset without needing to run the Python script.
 
-You only need to import the file:
-
-full_database.sql
-
 Follow the steps below.
 
 Install the MySQL extension in VS Code
