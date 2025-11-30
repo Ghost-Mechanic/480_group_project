@@ -2,7 +2,7 @@
 
 // Declare bookContainerElement in a scope accessible to the function
 let bookContainerElement;
-let bachCount=10;
+let batchCount=10;
 let batchNum=0;
 let booklist=[];
 
@@ -43,7 +43,7 @@ function createBook(book) {
     bookCoverDiv.classList.add('book-cover');
 
     const bookCoverImg = document.createElement('img');
-    bookCoverImg.src = book.coverImg || "https://placehold.co/400x300?text=Book+Cover";
+    bookCoverImg.src = book.coverImage || "https://placehold.co/400x300?text=Book+Cover";
     bookCoverImg.alt = book.title;
 
     // Book info
@@ -56,23 +56,23 @@ function createBook(book) {
 
     const bookAuthorP = document.createElement('p');
     bookAuthorP.classList.add('book-author');
-    bookAuthorP.textContent = `Author(s): ${book.authors.join(', ') || "Unknown"}`;
+    bookAuthorP.textContent = `Author(s): ${book.authors || "Unknown"}`;
 
     const bookGenresP=document.createElement('p')
     bookGenresP.classList.add('book-genre')
-    bookGenresP.textContent= `Genre(s): ${book.genres.join(', ') || "Unknown"}`;
+    bookGenresP.textContent= `Genre(s): ${book.genres || "Unknown"}`;
 
     const bookDescriptionP = document.createElement('p');
     bookDescriptionP.classList.add('book-description');
-    bookDescriptionP.textContent = book.description || "No description available.";
+    bookDescriptionP.textContent = book.synopsis || "No description available.";
 
     const bookRatingP = document.createElement('p');
     bookRatingP.classList.add('book-rating');
-    bookRatingP.textContent = `Rating: ${book.rating || "N/A"}`;
+    bookRatingP.textContent = `Rating: ${book.avgRating || "N/A"}`;
 
     const publicationDateP = document.createElement('p');
     publicationDateP.classList.add('book-publication-date');
-    publicationDateP.textContent = `Published: ${book.publicationDate || "N/A"}`;
+    publicationDateP.textContent = `Published: ${book.datePublished || "N/A"}`;
 
     const ISBNP = document.createElement('p');
     ISBNP.classList.add('book-isbn');
