@@ -2,10 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const loginBtn = document.getElementById("loginBtn");
 
-    const user = localStorage.getItem("loggedInUser");
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
     if (user) {
-        loginBtn.textContent = `Logout (${user})`;
+        loginBtn.textContent = `Logout (${user.username})`;
         loginBtn.style.cursor = "pointer";
     
         loginBtn.addEventListener("click", () => {
