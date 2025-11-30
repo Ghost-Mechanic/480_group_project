@@ -2,8 +2,38 @@
 
 // Declare bookContainerElement in a scope accessible to the function
 let bookContainerElement;
+let bachCount=10;
+let batchNum=0;
+let booklist=[];
 
-function createBookDisplay(book) {
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+      // Get query params from URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Fetch books from backend
+      const res = await fetch(`/api/books/filter?${urlParams.toString()}`);
+      const data = await res.json();
+      booklist=data
+      // Print the books to console
+      console.log("Fetched books:", data);
+      bookContainerElement = document.getElementById('book-results-container');
+      bookContainerElement.innerHTML=""; // clear any previous content
+
+      if (booklist.length == 0) {
+          bookContainerElement.append(document.createElement('p').textContent('No Results'));
+      }
+      else {
+        createBookDisplay();
+      }
+
+  } catch (err) {
+      console.error("Error fetching books:", err);
+  }
+});
+
+function createBook(book) {
+    console.log(book.toString())
     // Create main book div
     const bookItemDiv = document.createElement('div');
     bookItemDiv.classList.add('book-item');
@@ -13,7 +43,7 @@ function createBookDisplay(book) {
     bookCoverDiv.classList.add('book-cover');
 
     const bookCoverImg = document.createElement('img');
-    bookCoverImg.src = book.imgSrc || "https://placehold.co/400x300?text=Book+Cover";
+    bookCoverImg.src = book.coverImg || "https://placehold.co/400x300?text=Book+Cover";
     bookCoverImg.alt = book.title;
 
     // Book info
@@ -26,7 +56,11 @@ function createBookDisplay(book) {
 
     const bookAuthorP = document.createElement('p');
     bookAuthorP.classList.add('book-author');
-    bookAuthorP.textContent = `Author: ${book.author || "Unknown"}`;
+    bookAuthorP.textContent = `Author(s): ${book.authors.join(', ') || "Unknown"}`;
+
+    const bookGenresP=document.createElement('p')
+    bookGenresP.classList.add('book-genre')
+    bookGenresP.textContent= `Genre(s): ${book.genres.join(', ') || "Unknown"}`;
 
     const bookDescriptionP = document.createElement('p');
     bookDescriptionP.classList.add('book-description');
@@ -48,6 +82,7 @@ function createBookDisplay(book) {
     bookCoverDiv.appendChild(bookCoverImg);
     bookInfoDiv.appendChild(bookTitleH2);
     bookInfoDiv.appendChild(bookAuthorP);
+    bookInfoDiv.appendChild(bookGenresP);
     bookInfoDiv.appendChild(bookDescriptionP);
     bookInfoDiv.appendChild(bookRatingP);
     bookInfoDiv.appendChild(publicationDateP);
@@ -59,51 +94,44 @@ function createBookDisplay(book) {
     bookContainerElement.appendChild(bookItemDiv);
 }
 
-// Book class
-class Book {
-  constructor(imgSrc, title, author, description, rating, publicationDate, isbn) {
-    this.imgSrc = imgSrc;
-    this.title = title;
-    this.author = author;
-    this.description = description;
-    this.rating = rating;
-    this.publicationDate = publicationDate;
-    this.isbn = isbn;
+function createBookDisplay(){
+  if (booklist.length>batchCount) {
+    for (i=batchNum*batchCount; i<(batchNum*batchCount)+batchCount; i++){
+      createBook(booklist[i])
+    }
+    batchNum++;
   }
-}
+  else{
+    booklist.forEach(book => {
+      createBook(book);
+    });
+  }
 
-// Test book
-const testBook = new Book(
-    "https://placehold.co/400x300?text=Book+Cover",
-    "Sample Book Title",
-    "John Doe",
-    "This is a sample description of the book.",
-    "4.5/5",
-    "2023-01-01",
-    "123-4567890123"
-);
-
-// On page load
-window.onload = function() {
-    bookContainerElement = document.getElementById('book-results-container');
-    createBookDisplay(testBook);
 }
+// Book class
+// class Book {
+//   constructor(imgSrc, title, author, description, rating, publicationDate, isbn) {
+//     this.imgSrc = imgSrc;
+//     this.title = title;
+//     this.author = author;
+//     this.description = description;
+//     this.rating = rating;
+//     this.publicationDate = publicationDate;
+//     this.isbn = isbn;
+//   }
+// }
+
+// // Test book
+// const testBook = new Book(
+//     "https://placehold.co/400x300?text=Book+Cover",
+//     "Sample Book Title",
+//     "John Doe",
+//     "This is a sample description of the book.",
+//     "4.5/5",
+//     "2023-01-01",
+//     "123-4567890123"
+// );
 
 console.log("Book display script loaded.");
 
-window.addEventListener("DOMContentLoaded", async () => {
-  try {
-      // Get query params from URL
-      const urlParams = new URLSearchParams(window.location.search);
 
-      // Fetch books from backend
-      const res = await fetch(`/api/books/filter?${urlParams.toString()}`);
-      const data = await res.json();
-
-      // Print the books to console
-      console.log("Fetched books:", data);
-
-  } catch (err) {
-      console.error("Error fetching books:", err);
-  }
-});
