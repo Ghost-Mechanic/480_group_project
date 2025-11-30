@@ -34,14 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const year = document.getElementById("dateInput").value;
         const rating = document.getElementById("ratingInput").value;
 
-        const params = new URLSearchParams({ 
-            title, 
-            author, 
-            genre, 
-            datePublished: year, 
-            minRating: rating 
-        });
+        // Only include non-empty filters
+        const filters = {};
+        if (title) filters.title = title;
+        if (author) filters.author = author;
+        if (genre) filters.genre = genre;
+        if (year) filters.datePublished = year;
+        if (rating) filters.minRating = rating;
 
+        const params = new URLSearchParams(filters);
+        // Redirect to results page
         window.location.href = `results.html?${params.toString()}`;
     });
 

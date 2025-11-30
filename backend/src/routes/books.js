@@ -52,7 +52,7 @@ router.get("/filter", async (req, res) => {
         }
 
         if (datePublished) {
-            conditions.push("b.DatePublished = ?");
+            conditions.push("YEAR(b.DatePublished) = ?");
             params.push(datePublished);
         }
 
