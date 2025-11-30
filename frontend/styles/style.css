@@ -7,7 +7,7 @@ body {
 
 header {
     position: sticky;
-    top:0;
+    top: 0;
     z-index: 100;
     background: white;
     padding: 20px;
@@ -42,7 +42,7 @@ header h1 {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .input-group {
@@ -93,36 +93,40 @@ header h1 {
 /* Additional styles for book results */
 
 #book-results-container {
-  display: flex;
-  width: 100%;
-  flex-wrap:wrap;
-  gap: 16px;
-  justify-content: center;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
 }
 
 .book-item {
-  margin: 30px auto;
-  width: 60%;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  display: flex;
+    margin: 30px auto;
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
 }
 
-.book-item .book-cover{
-  padding: 10px;
-  float: left;
+.book-item .book-cover {
+    padding: 10px;
+    float: left;
+    display: block;
+    margin:auto;
+    min-width: 20%;
+    max-width: 200px;
 }
 
 .book-item .book-cover img {
-  width: 100%;
-  max-width: 200px;
-  border-radius: 4px;
+    width: 100%;
+    max-width: 200px;
+    border-radius: 4px;
 }
 
 
 .book-item .book-info {
-  padding: 10px;
-  float: right
+    padding: 10px;
+    float: right
 }

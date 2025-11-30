@@ -2,135 +2,116 @@
 
 // Declare bookContainerElement in a scope accessible to the function
 let bookContainerElement;
-let bachCount=10;
-let batchNum=0;
-let booklist=[];
+let batchCount = 10;
+let batchNum = 0;
+let booklist = [];
+
+let resultsHeading;
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-      // Get query params from URL
-      const urlParams = new URLSearchParams(window.location.search);
+    // Get query params from URL
+    const urlParams = new URLSearchParams(window.location.search);
 
-      // Fetch books from backend
-      const res = await fetch(`/api/books/filter?${urlParams.toString()}`);
-      const data = await res.json();
-      booklist=data
-      // Print the books to console
-      console.log("Fetched books:", data);
-      bookContainerElement = document.getElementById('book-results-container');
-      bookContainerElement.innerHTML=""; // clear any previous content
+    // Fetch books from backend
+    const res = await fetch(`/api/books/filter?${urlParams.toString()}`);
+    const data = await res.json();
+    booklist = data
+    // Print the books to console
+    console.log("Fetched books:", data);
+    bookContainerElement = document.getElementById('book-results-container');
+    resultsHeading = document.getElementById('results-h1')
+    bookContainerElement.innerHTML = ""; // clear any previous content
 
-      if (booklist.length == 0) {
-          bookContainerElement.append(document.createElement('p').textContent('No Results'));
-      }
-      else {
-        createBookDisplay();
-      }
+    if (booklist.length == 0) {
+      resultsHeading.textContent = 'No Results'
+    }
+    else {
+      resultsHeading.textContent = booklist.length + ' Result(s) (Showing Top 10)'
+      createBookDisplay();
+    }
 
   } catch (err) {
-      console.error("Error fetching books:", err);
+    console.error("Error fetching books:", err);
   }
 });
 
 function createBook(book) {
-    console.log(book.toString())
-    // Create main book div
-    const bookItemDiv = document.createElement('div');
-    bookItemDiv.classList.add('book-item');
+  console.log(book.toString())
+  // Create main book div
+  const bookItemDiv = document.createElement('div');
+  bookItemDiv.classList.add('book-item');
 
-    // Book cover
-    const bookCoverDiv = document.createElement('div');
-    bookCoverDiv.classList.add('book-cover');
+  // Book cover
+  const bookCoverDiv = document.createElement('div');
+  bookCoverDiv.classList.add('book-cover');
 
-    const bookCoverImg = document.createElement('img');
-    bookCoverImg.src = book.coverImg || "https://placehold.co/400x300?text=Book+Cover";
-    bookCoverImg.alt = book.title;
+  const bookCoverImg = document.createElement('img');
+  bookCoverImg.src = book.coverImage || "https://placehold.co/400x300?text=Book+Cover";
+  bookCoverImg.alt = book.title;
 
-    // Book info
-    const bookInfoDiv = document.createElement('div');
-    bookInfoDiv.classList.add('book-info');
+  // Book info
+  const bookInfoDiv = document.createElement('div');
+  bookInfoDiv.classList.add('book-info');
 
-    const bookTitleH2 = document.createElement('h2');
-    bookTitleH2.classList.add('book-title');
-    bookTitleH2.textContent = book.title;
+  const bookTitleH2 = document.createElement('h2');
+  bookTitleH2.classList.add('book-title');
+  bookTitleH2.textContent = book.title;
 
-    const bookAuthorP = document.createElement('p');
-    bookAuthorP.classList.add('book-author');
-    bookAuthorP.textContent = `Author(s): ${book.authors.join(', ') || "Unknown"}`;
+  const bookAuthorP = document.createElement('p');
+  bookAuthorP.classList.add('book-author');
+  bookAuthorP.textContent = `Author(s): ${book.authors || "Unknown"}`;
 
-    const bookGenresP=document.createElement('p')
-    bookGenresP.classList.add('book-genre')
-    bookGenresP.textContent= `Genre(s): ${book.genres.join(', ') || "Unknown"}`;
+  const bookGenresP = document.createElement('p')
+  bookGenresP.classList.add('book-genre')
+  bookGenresP.textContent = `Genre(s): ${book.genres || "Unknown"}`;
 
-    const bookDescriptionP = document.createElement('p');
-    bookDescriptionP.classList.add('book-description');
-    bookDescriptionP.textContent = book.description || "No description available.";
+  const bookDescriptionP = document.createElement('p');
+  bookDescriptionP.classList.add('book-description');
+  bookDescriptionP.textContent = book.synopsis || "No description available.";
 
-    const bookRatingP = document.createElement('p');
-    bookRatingP.classList.add('book-rating');
-    bookRatingP.textContent = `Rating: ${book.rating || "N/A"}`;
+  const bookRatingP = document.createElement('p');
+  bookRatingP.classList.add('book-rating');
+  bookRatingP.textContent = `Rating: ${book.avgRating || "N/A"}`;
 
-    const publicationDateP = document.createElement('p');
-    publicationDateP.classList.add('book-publication-date');
-    publicationDateP.textContent = `Published: ${book.publicationDate || "N/A"}`;
+  const publicationDateP = document.createElement('p');
+  publicationDateP.classList.add('book-publication-date');
+  publicationDateP.textContent = `Published: ${book.datePublished || "N/A"}`;
 
-    const ISBNP = document.createElement('p');
-    ISBNP.classList.add('book-isbn');
-    ISBNP.textContent = `ISBN: ${book.isbn || "N/A"}`;
+  const ISBNP = document.createElement('p');
+  ISBNP.classList.add('book-isbn');
+  ISBNP.textContent = `ISBN: ${book.isbn || "N/A"}`;
 
-    // Append children
-    bookCoverDiv.appendChild(bookCoverImg);
-    bookInfoDiv.appendChild(bookTitleH2);
-    bookInfoDiv.appendChild(bookAuthorP);
-    bookInfoDiv.appendChild(bookGenresP);
-    bookInfoDiv.appendChild(bookDescriptionP);
-    bookInfoDiv.appendChild(bookRatingP);
-    bookInfoDiv.appendChild(publicationDateP);
-    bookInfoDiv.appendChild(ISBNP);
+  // Append children
+  bookCoverDiv.appendChild(bookCoverImg);
+  bookInfoDiv.appendChild(bookTitleH2);
+  bookInfoDiv.appendChild(bookAuthorP);
+  bookInfoDiv.appendChild(bookGenresP);
+  bookInfoDiv.appendChild(bookDescriptionP);
+  bookInfoDiv.appendChild(bookRatingP);
+  bookInfoDiv.appendChild(publicationDateP);
+  bookInfoDiv.appendChild(ISBNP);
 
-    bookItemDiv.appendChild(bookCoverDiv);
-    bookItemDiv.appendChild(bookInfoDiv);
+  bookItemDiv.appendChild(bookCoverDiv);
+  bookItemDiv.appendChild(bookInfoDiv);
 
-    bookContainerElement.appendChild(bookItemDiv);
+  bookContainerElement.appendChild(bookItemDiv);
 }
 
-function createBookDisplay(){
-  if (booklist.length>batchCount) {
-    for (i=batchNum*batchCount; i<(batchNum*batchCount)+batchCount; i++){
+function createBookDisplay() {
+  if (booklist.length > batchCount) {
+    for (let i = batchNum * batchCount; i < (batchNum * batchCount) + batchCount; i++) {
       createBook(booklist[i])
     }
     batchNum++;
   }
-  else{
+  else {
     booklist.forEach(book => {
       createBook(book);
     });
   }
 
 }
-// Book class
-// class Book {
-//   constructor(imgSrc, title, author, description, rating, publicationDate, isbn) {
-//     this.imgSrc = imgSrc;
-//     this.title = title;
-//     this.author = author;
-//     this.description = description;
-//     this.rating = rating;
-//     this.publicationDate = publicationDate;
-//     this.isbn = isbn;
-//   }
-// }
-
-// // Test book
-// const testBook = new Book(
-//     "https://placehold.co/400x300?text=Book+Cover",
-//     "Sample Book Title",
-//     "John Doe",
-//     "This is a sample description of the book.",
-//     "4.5/5",
-//     "2023-01-01",
-//     "123-4567890123"
-// );
 
 console.log("Book display script loaded.");
 
