@@ -4,22 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create Header
     const header = document.createElement('header');
-    header.style.cssText = 'background-color: #2c3e50; color: white; padding: 1rem 2rem; text-align: center;';
     header.innerHTML = `
-        <h1 style="margin: 0;">
-            <a href="index.html" style="text-decoration: none; color: white;">Book Overflow</a>
-        </h1>
-        <nav style="margin-top: 10px;">
-            <a href="index.html" style="color: #bdc3c7; margin: 0 10px; text-decoration: none;">Home</a>
-            <a href="ratings.html" style="color: #bdc3c7; margin: 0 10px; text-decoration: none;">Ratings</a>
-        </nav>
-    `;
-
-    // Create Footer
-    const footer = document.createElement('footer');
-    footer.style.cssText = 'background-color: #2c3e50; color: white; text-align: center; padding: 1rem; margin-top: auto;';
-    footer.innerHTML = `
-        <p style="margin: 0;">&copy; <span id="year">${new Date().getFullYear()}</span> Book Overflow. All rights reserved.</p>
+        <a href="index.html"><h1>BookOverflow</h1></a>
+        <button id="loginBtn">Login / Signup</button>
     `;
 
     // Insert Header (as first child)
@@ -29,6 +16,27 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(header);
     }
 
-    // Insert Footer (as last child)
-    container.appendChild(footer);
+    const loginBtn = document.getElementById("loginBtn");
+
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (user) {
+        loginBtn.textContent = `Logout (${user.username})`;
+        loginBtn.style.cursor = "pointer";
+
+        loginBtn.addEventListener("click", () => {
+            const confirmLogout = confirm("Log out?");
+            if (confirmLogout) {
+                localStorage.removeItem("loggedInUser");
+                window.location.reload();
+            }
+        });
+    } else {
+        loginBtn.textContent = "Login / Signup";
+        loginBtn.style.cursor = "pointer";
+
+        loginBtn.addEventListener("click", () => {
+            window.location.href = "login.html";
+        });
+    }
 });

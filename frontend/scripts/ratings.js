@@ -1,30 +1,41 @@
 //Test w this link: http://localhost:63342/frontend/ratings.html?isbn=9781848703629
+//                  http://localhost:63342/frontend/ratings.html?isbn=9781583962428
+const API = "http://localhost:3001";
 
-const params = new URLSearchParams(window.location.search);
-const isbn = params.get("isbn");
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const isbn = params.get("isbn");
 
-console.log("Viewing ratings for ISBN:", isbn);
-
-window.addEventListener("DOMContentLoaded", async () => {
-    try {
-        // Get query params from URL
-        const urlParams = new URLSearchParams(window.location.search);
-
-        // Fetch books from backend
-        const res = await fetch(`http://localhost:3001/api/books/filter?${urlParams.toString()}`);
-        const data = await res.json();
-        booklist = data
-        // Print the books to console
-        console.log("Fetched books:", data);
-
-    } catch (err) {
-        console.error("Error fetching books:", err);
-    }
-
-    // renderBookInfo()
+    loadBookDetails(isbn);
+    loadRatings(isbn);
 });
 
-function renderBookInfo() {
+async function loadBookDetails(isbn) {
+    try {
+        const res = await fetch(`${API}/api/books/${isbn}`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch book:", await res.text());
+            return;
+        }
+
+        const book = await res.json();
+        // console.log(book);
+        renderBookInfo( book)
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function loadRatings(isbn) {
+    const res = await fetch(`${API}/api/ratings/book?isbn=${isbn}`);
+    const ratings = await res.json();
+
+    // console.log(ratings);
+    renderRatings(ratings);
+}
+
+function renderBookInfo(bookData) {
     const bookContainer = document.getElementById('book-details');
     if (!bookContainer) return;
 
@@ -33,9 +44,10 @@ function renderBookInfo() {
             <img src="${bookData.CoverImage}" alt="${bookData.Title} cover" class="book-cover">
             <div class="book-meta">
                 <h1>${bookData.Title}</h1>
-                <h3>by ${bookData.Author} (${bookData.DatePublished})</h3>
-                <p>${bookData.Synposis}</p>
-                <p>Avg rating: ${bookData.AvgRating}</p>
+                <h3>by ${bookData.Authors} (${bookData.DatePublished})</h3>
+                <p>${bookData.Synopsis}</p>
+                <p>Avg rating: ${bookData.AvgRating ? `${bookData.AvgRating} ⭐` : "No ratings yet"
+}</p>
             </div>
         </div>
     `;
@@ -43,7 +55,7 @@ function renderBookInfo() {
     bookContainer.innerHTML = html;
 }
 
-function renderRatings() {
+function renderRatings(ratingsData) {
     const ratingsContainer = document.getElementById('ratings-list');
     if (!ratingsContainer) return;
 
@@ -51,7 +63,7 @@ function renderRatings() {
         <div class="rating-card">
             <div class="rating-header">
                 <span class="rating-user">${review.UserName}</span>
-                <span class="rating-date">${review.Date}</span>
+                <span class="rating-date">${review.CreatedAt}</span>
             </div>
             <div class="rating-stars">${'★'.repeat(review.RatingValue)}${'☆'.repeat(5 - review.stars)}</div>
             <p class="rating-comment">${review.Description}</p>
@@ -63,10 +75,7 @@ function renderRatings() {
 
 
 //Called when user submits form
-const API = "http://localhost:3001";
-
 document.addEventListener("DOMContentLoaded", () => {
-    // Read ?isbn=... from URL
     const params = new URLSearchParams(window.location.search);
     const isbn = params.get("isbn");
 
@@ -83,16 +92,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const stars = document.getElementById("ratingStars").value;
         const reviewText = document.getElementById("ratingText").value;
 
-        // OPTIONAL — get the logged in user
         const user = JSON.parse(localStorage.getItem("loggedInUser"));
-        const userId = user ? user.CustomerID : null;
 
         const body = {
-            isbn,
-            stars,
-            review: reviewText,
-            userId         // send null if no login
+            customerId: user ? user.id : null,
+            isbn: isbn,
+            userName: user ? user.username : null,
+            ratingValue: stars,
+            description: reviewText,
+            createdAt: new Date().toISOString().split("T")[0]
         };
+
+        if (body.userName == null || body.customerId == null){
+            alert("You must be logged in to submit a rating.");
+            return;
+        }
 
         try {
             const res = await fetch(`${API}/api/ratings`, {
@@ -109,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             alert("Your rating has been submitted!");
             ratingForm.reset();
+            window.location.reload();
 
         } catch (err) {
             console.error(err);

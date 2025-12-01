@@ -22,8 +22,9 @@ router.get("/", async(req, res) => {
     }
 });
 
-// get ratings for a specific book
-router.get("/book", async(req, res) => {
+//Gets a specific rating based on ISBN
+// get ratings for a specific book by ISBN
+router.get("/:isbn", async (req, res) => {
     const { isbn } = req.query;
 
     if (!isbn) return res.status(400).json({ error: "ISBN is required" });
@@ -31,20 +32,20 @@ router.get("/book", async(req, res) => {
     try {
         const [rows] = await db.query(
             `SELECT ISBN, 
-            UserName, 
-            RatingValue, 
-            Description, 
-            CreatedAt 
-            FROM Rating 
-            WHERE ISBN = ? 
-            ORDER BY CreatedAt DESC`,
+                    UserName, 
+                    RatingValue, 
+                    Description, 
+                    CreatedAt 
+             FROM Rating
+             WHERE ISBN = ?
+             ORDER BY CreatedAt DESC`,
             [isbn]
         );
 
         res.json(rows);
-    } catch(err) {
+    } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Failed to fetch rating" });
+        res.status(500).json({ error: "Failed to fetch ratings for this book" });
     }
 });
 

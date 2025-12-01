@@ -122,6 +122,43 @@ router.get("/filter", async (req, res) => {
     }
 });
 
+//Gets a book based on ISBN
+// Get a specific book by ISBN
+router.get("/:isbn", async (req, res) => {
+    const { isbn } = req.params;
+
+    try {
+        const [rows] = await db.query(
+            `
+            SELECT 
+                b.ISBN,
+                b.Title,
+                b.Synopsis,
+                b.DatePublished,
+                b.CoverImage,
+                b.AvgRating,
+                GROUP_CONCAT(DISTINCT CONCAT(a.FirstName, ' ', a.LastName) SEPARATOR ', ') AS Authors,
+                GROUP_CONCAT(DISTINCT g.GenreName SEPARATOR ', ') AS Genres
+            FROM Book b
+            LEFT JOIN Author a ON b.ISBN = a.ISBN
+            LEFT JOIN Genres g ON b.ISBN = g.ISBN
+            WHERE b.ISBN = ?
+            GROUP BY b.ISBN;
+            `,
+            [isbn]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Book not found" });
+        }
+
+        res.json(rows[0]); // send single book object
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch book" });
+    }
+});
+
 // Add a new book
 router.post("/", async (req, res) => {
     const { title, description } = req.body;
