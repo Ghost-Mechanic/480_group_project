@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
 
     // Fetch books from backend
-    const res = await fetch(`/api/books/filter?${urlParams.toString()}`);
+    const res = await fetch(`http://localhost:3001/api/books/filter?${urlParams.toString()}`);
     const data = await res.json();
     booklist = data
     // Print the books to console
