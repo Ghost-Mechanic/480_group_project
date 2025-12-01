@@ -52,3 +52,5 @@ ehthumbs.db
 venv/
 .env
 
+backend/.env
+database/populate_openlibrary_mysql.py

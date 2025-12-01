@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Ratings</title>
+    <link rel="stylesheet" href="styles/ratings.css">
+    <link rel="stylesheet" href="styles/home.css">
+</head>
+<body>
+
+<div id="app" style="display: flex; flex-direction: column; min-height: 100vh; font-family: Arial, sans-serif;">
+    <!-- Header injected by global.js -->
+
+    <main style="flex: 1; padding: 2rem; background-color: #f4f4f9;">
+        <div class="container">
+            <section id="book-details">
+                <!-- Book info will be injected here -->
+            </section>
+
+            <!-- Rating form injected by global.js -->
+            <section>
+                <form id="ratingForm" class="rating-form">
+
+                    <h2>Leave a Review</h2>
+
+                    <!-- Star rating -->
+                    <label for="ratingStars">Rating:</label>
+                    <select id="ratingStars" name="ratingStars" required>
+                        <option value="">Select stars...</option>
+                        <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5 Stars</option>
+                        <option value="4">⭐️⭐️⭐️⭐️ — 4 Stars</option>
+                        <option value="3">⭐️⭐️⭐️ — 3 Stars</option>
+                        <option value="2">⭐️⭐️ — 2 Stars</option>
+                        <option value="1">⭐️ — 1 Star</option>
+                    </select>
+
+                    <!-- Review text -->
+                    <label for="ratingText">Review:</label>
+                    <textarea
+                            id="ratingText"
+                            name="ratingText"
+                            placeholder="Write your thoughts about this book..."
+                            rows="5"
+                            required>
+                    </textarea>
+
+                    <!-- Submit button -->
+                    <button type="submit">Submit Review</button>
+
+                </form>
+            </section>
+
+            <section>
+                <h2>User Ratings</h2>
+                <div id="ratings-list">
+                    <!-- Ratings will be injected here -->
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Footer injected by global.js -->
+</div>
+
+<script src="scripts/global.js"></script>
+<script src="scripts/ratings.js"></script>
+</body>
+</html>

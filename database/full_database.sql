@@ -6,6 +6,8 @@ USE `cs480_group_project`;
 -- ------------------------------------------------------
 -- Server version	8.0.43
 
+USE cs480_group_project;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;

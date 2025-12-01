@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
 
     // Fetch books from backend
-    const res = await fetch(`/api/books/filter?${urlParams.toString()}`);
+    const res = await fetch(`http://localhost:3001/api/books/filter?${urlParams.toString()}`);
     const data = await res.json();
     booklist = data
     // Print the books to console
@@ -82,6 +82,10 @@ function createBook(book) {
   ISBNP.classList.add('book-isbn');
   ISBNP.textContent = `ISBN: ${book.isbn || "N/A"}`;
 
+const ratingsLink = document.createElement('a');
+ratingsLink.textContent = "See Ratings";
+ratingsLink.href = `ratings.html?isbn=${book.isbn}`;
+
   // Append children
   bookCoverDiv.appendChild(bookCoverImg);
   bookInfoDiv.appendChild(bookTitleH2);
@@ -91,6 +95,7 @@ function createBook(book) {
   bookInfoDiv.appendChild(bookRatingP);
   bookInfoDiv.appendChild(publicationDateP);
   bookInfoDiv.appendChild(ISBNP);
+  bookInfoDiv.appendChild(ratingsLink);
 
   bookItemDiv.appendChild(bookCoverDiv);
   bookItemDiv.appendChild(bookInfoDiv);
