@@ -1,1 +1,54 @@
+
+# Repo-wide ignores
+
+# Node dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Build and coverage
+dist/
+build/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS generated files
 .DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Backend/frontend specific
+/backend/node_modules/
+/backend/.env
+/frontend/node_modules/
+/frontend/dist/
+/frontend/build/
+
+# Keep SQL dumps tracked; do not ignore *.sql in `database/` (they are project data)
+
+.venv/
+venv/
+.env
+

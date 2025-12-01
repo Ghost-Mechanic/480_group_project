@@ -1,33 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Book Overflow</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style.css">
-  </head>
-  <body>
-    <div id="app" style="display: flex; flex-direction: column; min-height: 100vh; font-family: Arial, sans-serif;">
-        <!-- Header injected by global.js -->
+    <title>BookOverflow - Home</title>
+</head>
 
-        <!-- Main Content -->
-        <main style="flex: 1; padding: 2rem; background-color: #f4f4f9;">
-            <p id="loading-text">Loading...</p>
-            <div
-                id="book-grid"
-                style="
-                    display: none;
-                    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                    gap: 2rem;
-                "
-            >
-                <!-- Books will be injected here by script.js -->
-            </div>
-        </main>
+<body>
+    <header>
+        <h1>BookOverflow</h1>
+        <button id="loginBtn">Login / Signup</button>
+    </header>
 
-        <!-- Footer injected by global.js -->
-    </div>
-    <script src="scripts/global.js"></script>
-    <script type="module" src="/scripts/script.js"></script>
-  </body>
+    <section class="search-container">
+
+        <div class="input-group">
+            <label>Title</label>
+            <input type="text" id="titleInput" placeholder="Enter book title">
+        </div>
+
+        <div class="input-group">
+            <label>Author</label>
+            <input type="text" id="authorInput" placeholder="Enter author name">
+        </div>
+
+        <div class="input-group">
+            <label>Genre</label>
+            <input type="text" id="genreInput" placeholder="Fantasy, Horror, etc.">
+        </div>
+
+        <div class="input-group">
+            <label>Year Published</label>
+            <input type="number" id="dateInput" placeholder="e.g. 1997">
+        </div>
+
+        <div class="input-group">
+            <label>Minimum Avg Rating</label>
+            <input type="number" id="ratingInput" placeholder="1-5" step="0.1">
+        </div>
+
+        <button id="searchBtn" class="search-btn">Search</button>
+
+    </section>
+
+    <script src="scripts/home.js"></script>
+</body>
 </html>
