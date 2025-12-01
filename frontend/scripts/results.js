@@ -85,7 +85,8 @@ function createBook(book) {
   ISBNP.classList.add('book-isbn');
   ISBNP.textContent = `ISBN: ${book.isbn || "N/A"}`;
 
-const ratingsLink = document.createElement('a');
+const ratingsLink = document.createElement('button');
+ratingsLink.classList.add('search-btn')
 ratingsLink.textContent = "See Ratings";
 ratingsLink.href = `ratings.html?isbn=${book.isbn}`;
 

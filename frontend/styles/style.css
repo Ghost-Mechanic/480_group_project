@@ -151,6 +151,39 @@ header h1 a{
 }
 
 /* Ratings Styling */
+#book-details {
+    margin: 30px auto;
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.book-header {
+    display: flex;
+    gap: 20px;
+}
+
+#book-details .book-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin:auto;
+}
+
+.book-meta h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+.book-meta h3 {
+    color: #666;
+    font-weight: normal;
+}
+
 .container { 
     /* same as book-item */
     margin: 30px auto;
@@ -160,4 +193,40 @@ header h1 a{
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
+}
+
+#ratings-list {
+    display: grid;
+    gap: 20px;
+}
+
+.rating-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #ECD06F;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.rating-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.rating-user {
+    font-weight: bold;
+}
+
+.rating-stars {
+    color: #f39c12;
+    margin-bottom: 8px;
+}
+
+.rating-comment {
+    margin: 0;
+    line-height: 1.4;
+    color: #333;
 }

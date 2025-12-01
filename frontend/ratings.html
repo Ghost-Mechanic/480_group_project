@@ -15,20 +15,16 @@
         <button id="loginBtn">Login / Signup</button>
     </header>
 
-    <div id="app">
+    <div id="app" style="padding-bottom: 100px;">
         <!-- Header injected by global.js -->
         <main>
-            <div class="container">
-                <section id="book-details">
-                    <!-- Book info will be injected here -->
-                </section>
-            </div>
+            <section id="book-details">
+                <!-- Book info will be injected here -->
+            </section>
             <div class="container">
                 <!-- Rating form injected by global.js -->
                 <section style="width: 100%;">
-                    <form id="ratingForm" class="rating-form">
-
-                        <!-- <div class="container"> -->
+                    <form id="ratingForm">
                             <h2>Leave a Review</h2>
 
                             <!-- Star rating -->
@@ -48,7 +44,6 @@
                                 <label for="ratingText">Review:</label>
                                 <textarea id="ratingText" name="ratingText" placeholder="Write your thoughts about this book..." required></textarea>
                             </div>
-                        <!-- </div> -->
                         <!-- Submit button -->
                         <button class="search-btn" type="submit">Submit Review</button>
 
@@ -58,9 +53,10 @@
 
             <section style="text-align: center;">
                 <h1>User Ratings</h1>
-                <div id="ratings-list">
+                    <div id="ratings-list" style="margin:auto; width: 60%">
                     <!-- Ratings will be injected here -->
                 </div>
+                
             </section>
         </main>
 
