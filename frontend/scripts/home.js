@@ -1,30 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    const loginBtn = document.getElementById("loginBtn");
-
-    const user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-    if (user) {
-        loginBtn.textContent = `Logout (${user.username})`;
-        loginBtn.style.cursor = "pointer";
-    
-        loginBtn.addEventListener("click", () => {
-            const confirmLogout = confirm("Log out?");
-            if (confirmLogout) {
-                localStorage.removeItem("loggedInUser");
-                window.location.reload();
-            }
-        });
-    } else {
-        loginBtn.textContent = "Login / Signup";
-        loginBtn.style.cursor = "pointer";
-    
-        loginBtn.addEventListener("click", () => {
-            window.location.href = "login.html";
-        });
-    }
-
-    // search funtionalty same
+    // Search functionality
     const searchBtn = document.getElementById("searchBtn");
 
     searchBtn.addEventListener("click", () => {
@@ -46,5 +21,4 @@ document.addEventListener("DOMContentLoaded", () => {
         // Redirect to results page
         window.location.href = `results.html?${params.toString()}`;
     });
-
 });

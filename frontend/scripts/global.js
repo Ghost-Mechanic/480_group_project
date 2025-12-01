@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const app = document.getElementById('app');
-    const container = app || document.body;
+    const container = document.body;
 
     // Create Header
     const header = document.createElement('header');
@@ -16,7 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(header);
     }
 
-    const loginBtn = document.getElementById("loginBtn");
+    // Query the button from the newly inserted header (not document)
+    const loginBtn = header.querySelector('#loginBtn');
+
+    if (!loginBtn) {
+        console.error('loginBtn not found in header');
+        return;
+    }
 
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
