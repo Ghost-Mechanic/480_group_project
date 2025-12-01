@@ -1,6 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
-    renderBookInfo();
-    renderRatings();
+//Test w this link: http://localhost:63342/frontend/ratings.html?isbn=9781848703629
+
+const params = new URLSearchParams(window.location.search);
+const isbn = params.get("isbn");
+
+console.log("Viewing ratings for ISBN:", isbn);
+
+window.addEventListener("DOMContentLoaded", async () => {
+    try {
+        // Get query params from URL
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Fetch books from backend
+        const res = await fetch(`http://localhost:3001/api/books/filter?${urlParams.toString()}`);
+        const data = await res.json();
+        booklist = data
+        // Print the books to console
+        console.log("Fetched books:", data);
+
+    } catch (err) {
+        console.error("Error fetching books:", err);
+    }
+
+    // renderBookInfo()
 });
 
 function renderBookInfo() {
@@ -39,3 +60,59 @@ function renderRatings() {
 
     ratingsContainer.innerHTML = html;
 }
+
+
+//Called when user submits form
+const API = "http://localhost:3001";
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Read ?isbn=... from URL
+    const params = new URLSearchParams(window.location.search);
+    const isbn = params.get("isbn");
+
+    if (!isbn) {
+        alert("ERROR: No ISBN provided in URL.");
+        return;
+    }
+
+    const ratingForm = document.getElementById("ratingForm");
+
+    ratingForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const stars = document.getElementById("ratingStars").value;
+        const reviewText = document.getElementById("ratingText").value;
+
+        // OPTIONAL — get the logged in user
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        const userId = user ? user.CustomerID : null;
+
+        const body = {
+            isbn,
+            stars,
+            review: reviewText,
+            userId         // send null if no login
+        };
+
+        try {
+            const res = await fetch(`${API}/api/ratings`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                alert("Failed to submit rating: " + error.error);
+                return;
+            }
+
+            alert("Your rating has been submitted!");
+            ratingForm.reset();
+
+        } catch (err) {
+            console.error(err);
+            alert("Error submitting rating. Please try again.");
+        }
+    });
+});

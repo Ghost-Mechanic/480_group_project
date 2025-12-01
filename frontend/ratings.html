@@ -17,6 +17,39 @@
                 <!-- Book info will be injected here -->
             </section>
 
+            <!-- Rating form injected by global.js -->
+            <section>
+                <form id="ratingForm" class="rating-form">
+
+                    <h2>Leave a Review</h2>
+
+                    <!-- Star rating -->
+                    <label for="ratingStars">Rating:</label>
+                    <select id="ratingStars" name="ratingStars" required>
+                        <option value="">Select stars...</option>
+                        <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5 Stars</option>
+                        <option value="4">⭐️⭐️⭐️⭐️ — 4 Stars</option>
+                        <option value="3">⭐️⭐️⭐️ — 3 Stars</option>
+                        <option value="2">⭐️⭐️ — 2 Stars</option>
+                        <option value="1">⭐️ — 1 Star</option>
+                    </select>
+
+                    <!-- Review text -->
+                    <label for="ratingText">Review:</label>
+                    <textarea
+                            id="ratingText"
+                            name="ratingText"
+                            placeholder="Write your thoughts about this book..."
+                            rows="5"
+                            required>
+                    </textarea>
+
+                    <!-- Submit button -->
+                    <button type="submit">Submit Review</button>
+
+                </form>
+            </section>
+
             <section>
                 <h2>User Ratings</h2>
                 <div id="ratings-list">
