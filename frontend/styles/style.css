@@ -18,6 +18,11 @@ header h1 {
     margin: 0;
 }
 
+header h1 a{
+    color:inherit;
+    text-decoration: none;
+}
+
 /* TOP RIGHT LOGIN BUTTON */
 #loginBtn {
     position: absolute;
@@ -55,11 +60,25 @@ header h1 {
     font-weight: bold;
 }
 
-.input-group input {
+.input-group input, select {
     width: -webkit-fill-available;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
+}
+
+.input-group textarea{ 
+    width: 100%;
+    height: 150px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
 }
 
 .search-btn {
@@ -129,4 +148,16 @@ header h1 {
 .book-item .book-info {
     padding: 10px;
     float: right
+}
+
+/* Ratings Styling */
+.container { 
+    /* same as book-item */
+    margin: 30px auto;
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
 }

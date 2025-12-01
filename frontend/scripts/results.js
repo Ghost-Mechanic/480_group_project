@@ -41,6 +41,9 @@ function createBook(book) {
   // Create main book div
   const bookItemDiv = document.createElement('div');
   bookItemDiv.classList.add('book-item');
+  bookItemDiv.onclick=function(){
+    location.href=`ratings.html?isbn=${book.isbn}`
+  }
 
   // Book cover
   const bookCoverDiv = document.createElement('div');
