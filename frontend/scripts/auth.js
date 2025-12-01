@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("loggedInUser", JSON.stringify(user));
     
                 // Redirect to homepage
-                window.location.href = "home.html";
+                window.location.href = "index.html";
             } catch (err) {
                 console.error(err);
                 alert("Signup failed. Please try again.");
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("loggedInUser", JSON.stringify(user));
     
                 // Redirect to homepage
-                window.location.href = "home.html";
+                window.location.href = "index.html";
             } catch (err) {
                 console.error(err);
                 alert("Login failed. Please try again.");
