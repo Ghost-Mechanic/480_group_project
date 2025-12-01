@@ -1,6 +1,7 @@
 import requests
 import mysql.connector
 from datetime import date
+import time
 
 # ============= CONFIG =============
 DB_CONFIG = {
@@ -87,8 +88,27 @@ def insert_book(cur, isbn, title, synopsis, year):
     """
     pub_date = date(int(year), 1, 1) if year else None
 
-    # OpenLibrary cover image URL for this ISBN
-    cover_url = f"https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg"
+    cover_url='https://placehold.co/400x300?text=Book+Cover'
+    
+    # Send a GET request
+    response = requests.get(f"https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg?default=false")
+
+    # Check the status code
+    if response.status_code == 200:
+        # Access the JSON data from the response
+        cover_url = response.url
+        print("API Response (JSON):", cover_url)
+    else:
+        # Send a GET request
+        response = requests.get(f'https://bookcover.longitood.com/bookcover/{isbn}')
+        # Check the status code
+        if response.status_code == 200:
+            # Access the JSON data from the response
+            cover_url = response.json()['url']
+            print("API Response (JSON):", cover_url)
+        else:
+            print(f"Error: API request failed with status code {response.status_code} and error {response.json()['error']}")
+        # print(f"Error: API request failed with status code {response.status_code} and error {response.json()['error']}")
 
     sql = """
         INSERT INTO Book (ISBN, Title, Synopsis, DatePublished, CoverImage)
@@ -195,7 +215,7 @@ def load_books_all_genres():
             if isbn not in genres_assigned:
                 insert_genre(cur, isbn, genre)
                 genres_assigned.add(isbn)
-
+            time.sleep(0.2)
         cnx.commit()
         print(f"Finished genre: {genre}")
 
