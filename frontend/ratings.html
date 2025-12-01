@@ -1,74 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Ratings</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
+
 <body>
 
-<header>
-    <h1><a href="index.html">BookOverflow</a></h1>
-    <button id="loginBtn">Login / Signup</button>
-</header>
+    <header>
+        <h1><a href="index.html">BookOverflow</a></h1>
+        <button id="loginBtn">Login / Signup</button>
+    </header>
 
-<div id="app">
-    <!-- Header injected by global.js -->
-    <main>
-        <div class="container">
-            <section id="book-details">
-                <!-- Book info will be injected here -->
-            </section>
-        <div>
-        <div>
-            <!-- Rating form injected by global.js -->
-            <section>
-                <form id="ratingForm" class="rating-form">
+    <div id="app">
+        <!-- Header injected by global.js -->
+        <main>
+            <div class="container">
+                <section id="book-details">
+                    <!-- Book info will be injected here -->
+                </section>
+            </div>
+            <div class="container">
+                <!-- Rating form injected by global.js -->
+                <section style="width: 100%;">
+                    <form id="ratingForm" class="rating-form">
 
-                    <h2>Leave a Review</h2>
+                        <!-- <div class="container"> -->
+                            <h2>Leave a Review</h2>
 
-                    <!-- Star rating -->
-                    <label for="ratingStars">Rating:</label>
-                    <select id="ratingStars" name="ratingStars" required>
-                        <option value="">Select stars...</option>
-                        <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5 Stars</option>
-                        <option value="4">⭐️⭐️⭐️⭐️ — 4 Stars</option>
-                        <option value="3">⭐️⭐️⭐️ — 3 Stars</option>
-                        <option value="2">⭐️⭐️ — 2 Stars</option>
-                        <option value="1">⭐️ — 1 Star</option>
-                    </select>
+                            <!-- Star rating -->
+                            <div class="input-group">
+                                <label for="ratingStars">Rating:</label>
+                                <select id="ratingStars" name="ratingStars" required>
+                                    <option value="">Select stars...</option>
+                                    <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5 Stars</option>
+                                    <option value="4">⭐️⭐️⭐️⭐️ — 4 Stars</option>
+                                    <option value="3">⭐️⭐️⭐️ — 3 Stars</option>
+                                    <option value="2">⭐️⭐️ — 2 Stars</option>
+                                    <option value="1">⭐️ — 1 Star</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <!-- Review text -->
+                                <label for="ratingText">Review:</label>
+                                <textarea id="ratingText" name="ratingText" placeholder="Write your thoughts about this book..." required></textarea>
+                            </div>
+                        <!-- </div> -->
+                        <!-- Submit button -->
+                        <button class="search-btn" type="submit">Submit Review</button>
 
-                    <!-- Review text -->
-                    <label for="ratingText">Review:</label>
-                    <textarea
-                            id="ratingText"
-                            name="ratingText"
-                            placeholder="Write your thoughts about this book..."
-                            rows="5"
-                            required>
-                    </textarea>
+                    </form>
+                </section>
+            </div>
 
-                    <!-- Submit button -->
-                    <button type="submit">Submit Review</button>
-
-                </form>
-            </section>
-
-            <section>
-                <h2>User Ratings</h2>
+            <section style="text-align: center;">
+                <h1>User Ratings</h1>
                 <div id="ratings-list">
                     <!-- Ratings will be injected here -->
                 </div>
             </section>
-        </div>
-    </main>
-    
-    <!-- Footer injected by global.js -->
-</div>
+        </main>
 
-<!-- <script src="scripts/global.js"></script> -->
-<script src="scripts/data.js"></script>
-<script src="scripts/ratings.js"></script>
+        <!-- Footer injected by global.js -->
+    </div>
+
+    <!-- <script src="scripts/global.js"></script> -->
+    <script src="scripts/data.js"></script>
+    <script src="scripts/ratings.js"></script>
 </body>
+
 </html>
