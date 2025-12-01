@@ -8,4 +8,3 @@ SELECT ISBN, COUNT(*) AS c
 FROM Genres
 GROUP BY ISBN
 HAVING c > 1;
-

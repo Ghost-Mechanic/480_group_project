@@ -1,0 +1,116 @@
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Book Info Styles */
+#book-details {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.book-header {
+    display: flex;
+    gap: 20px;
+}
+
+.book-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.book-meta h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+.book-meta h3 {
+    color: #666;
+    font-weight: normal;
+}
+
+/* Rating Card Styles */
+#ratings-list {
+    display: grid;
+    gap: 20px;
+}
+
+.rating-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #4a90e2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.rating-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.rating-user {
+    font-weight: bold;
+}
+
+.rating-stars {
+    color: #f39c12;
+    margin-bottom: 8px;
+}
+
+.rating-comment {
+    margin: 0;
+    line-height: 1.4;
+    color: #333;
+}
+
+.rating-form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rating-form h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.rating-form select,
+.rating-form textarea,
+.rating-form button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.rating-form button {
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.rating-form button:hover {
+    background: #45A049;
+}

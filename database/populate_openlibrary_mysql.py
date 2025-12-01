@@ -6,8 +6,8 @@ import time
 # ============= CONFIG =============
 DB_CONFIG = {
     "host": "127.0.0.1",
-    "user": "cs480",
-    "password": "cs480pass",
+    "user": "root",
+    "password": "password",
     "database": "cs480_group_project",
 }
 
