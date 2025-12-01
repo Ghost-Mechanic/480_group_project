@@ -41,9 +41,6 @@ function createBook(book) {
   // Create main book div
   const bookItemDiv = document.createElement('div');
   bookItemDiv.classList.add('book-item');
-  bookItemDiv.onclick=function(){
-    location.href=`ratings.html?isbn=${book.isbn}`
-  }
 
   // Book cover
   const bookCoverDiv = document.createElement('div');
@@ -85,9 +82,12 @@ function createBook(book) {
   ISBNP.classList.add('book-isbn');
   ISBNP.textContent = `ISBN: ${book.isbn || "N/A"}`;
 
-const ratingsLink = document.createElement('a');
-ratingsLink.textContent = "See Ratings";
-ratingsLink.href = `ratings.html?isbn=${book.isbn}`;
+  const ratingsButton = document.createElement('button');
+  ratingsButton.classList.add('search-btn')
+  ratingsButton.textContent = "See Ratings";
+  ratingsButton.onclick = function () {
+    location.href = `ratings.html?isbn=${book.isbn}`
+  }
 
   // Append children
   bookCoverDiv.appendChild(bookCoverImg);
@@ -98,7 +98,7 @@ ratingsLink.href = `ratings.html?isbn=${book.isbn}`;
   bookInfoDiv.appendChild(bookRatingP);
   bookInfoDiv.appendChild(publicationDateP);
   bookInfoDiv.appendChild(ISBNP);
-  bookInfoDiv.appendChild(ratingsLink);
+  bookInfoDiv.appendChild(ratingsButton);
 
   bookItemDiv.appendChild(bookCoverDiv);
   bookItemDiv.appendChild(bookInfoDiv);
